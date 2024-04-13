@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management-app
+  namespace: default
+  labels:
+    app: user-management-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-management-app
+  template:
+    metadata:
+      labels:
+        app: user-management-app
+    spec:
+      containers:
+      - name: user-management-app
+        image: "devopshint/user-managementapp-1.0:latest"
+        ports:
+          - containerPort: 8000
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-management-app
+  namespace: default
+spec:
+  selector:
+    app: user-management-app
+  type: LoadBalancer
+  ports:
+  - name: http
+    targetPort: 8000
+    port: 8000
